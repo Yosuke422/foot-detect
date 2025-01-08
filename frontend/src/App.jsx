@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
 import { AuthProvider } from "./components/AuthContext"
+import CreateDetection from "./pages/CreateDetection"
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/create-detection" element={<CreateDetection />} />
       </Routes>
     </Router>
     </AuthProvider>
