@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; // Import du hook pour la navigation
 import "../assets/styles/Home.css";
 import joueurs from "../assets/images/joueurs.jpg";
 import joueuses from "../assets/images/joueuses.jpg";
@@ -8,6 +9,12 @@ import logo from "../assets/images/Logo_foot_detect.webp";
 import Footer from "../components/Footer";
 
 const Home = () => {
+  const navigate = useNavigate(); // Hook pour la navigation
+
+  const handleReservationClick = () => {
+    navigate("/booking"); // Redirige vers la page de réservation
+  };
+
   return (
     <div className="home">
       {/* Hero Section */}
@@ -16,7 +23,7 @@ const Home = () => {
         <img src={logo} alt="Foot'Detect" className="logo" />
           <h1>Foot'Detect</h1>
           <p>Trouvez votre chemin vers le football professionnel</p>
-          <button className="cta-button">Réserver</button>
+          <button className="cta-button" onClick={handleReservationClick}>Réserver</button>
         </div>
       </section>
 
