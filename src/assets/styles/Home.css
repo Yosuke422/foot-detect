@@ -28,21 +28,28 @@ body {
 }
 
   .hero img {
+    position: relative;
     width: 100px;
     margin-bottom: 20px;
+    z-index: 2;
   }
   
   .hero h1 {
+    position: relative;
     font-size: 3rem;
     margin-bottom: 60px;
+    z-index: 2;
   }
   
   .hero p {
+    position: relative;
     font-size: 1.9rem;
     margin-bottom: 40px;
+    z-index: 2;
   }
   
   .cta-button {
+    position: relative;
     padding: 15px 30px;
     font-size: 1rem;
     color: white;
@@ -50,6 +57,7 @@ body {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    z-index: 2;
   }
   
   .cta-button:hover {
