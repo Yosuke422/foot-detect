@@ -4,6 +4,7 @@ import joueurs from "../assets/images/joueurs.jpg";
 import joueuses from "../assets/images/joueuses.jpg";
 import ballon from "../assets/images/ballon.jpg";
 import joueur from "../assets/images/joueur.jpg";
+import logo from "../assets/images/Logo_foot_detect.webp";
 import Footer from "../components/Footer";
 
 const Home = () => {
@@ -12,7 +13,7 @@ const Home = () => {
       {/* Hero Section */}
       <section className="hero" style={{ backgroundImage: `url(${joueurs})` }}>
         <div className="hero-content">
-        {/*<img src={logo} alt="Foot'Detect" className="logo" />  */}
+        <img src={logo} alt="Foot'Detect" className="logo" />
           <h1>Foot'Detect</h1>
           <p>Trouvez votre chemin vers le football professionnel</p>
           <button className="cta-button">Réserver</button>
