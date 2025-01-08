@@ -1,95 +1,94 @@
 .create-detection-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f4f9;
-    padding: 20px;
-    background: no-repeat center center/cover;
-  }
-  
-  .create-detection-card {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    max-width: 400px;
-    text-align: center;
-  }
-  
-  h2 {
-    margin-bottom: 15px;
-    font-size: 1.8rem;
-    color: #333;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-    text-align: left;
-  }
-  
-  label {
-    font-size: 1rem;
-    font-weight: bold;
-    margin-bottom: 5px;
-    display: block;
-  }
-  
-  input, select {
-    width: 100%;
-    padding: 8px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .next-button, .prev-button, .submit-button {
-    margin-top: 10px;
-    padding: 10px;
-    width: 100%;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-  }
-  
-  .next-button, .submit-button {
-    background-color: green;
-    color: white;
-  }
-  
-  .next-button:hover, .submit-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .prev-button {
-    background-color: #f4f4f4;
-    color: #333;
-  }
-  
-  .prev-button:hover {
-    background-color: #ddd;
-  }
-  
-  .success-message, .error-message {
-    margin-top: 10px;
-    font-size: 0.9rem;
-  }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f9;
+  padding: 20px;
+  background: no-repeat center center/cover;
+}
 
-  .back-to-home-button {
-    background-color: #ff4d4d;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-bottom: 20px;
-  }
-  
-  .back-to-home-button:hover {
-    background-color: #e63939;
-  }
-  
-  
+.create-detection-card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 15px;
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+label {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  display: block;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.next-button, .prev-button, .submit-button {
+  margin-top: 10px;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.next-button, .submit-button {
+  background-color: green;
+  color: white;
+}
+
+.next-button:hover, .submit-button:hover {
+  background-color: #0056b3;
+}
+
+.prev-button {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.prev-button:hover {
+  background-color: #ddd;
+}
+
+.success-message, .error-message {
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.back-to-home-button {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.back-to-home-button:hover {
+  background-color: #e63939;
+}
+

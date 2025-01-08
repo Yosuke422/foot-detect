@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import du hook pour la navigation
+import { useNavigate } from "react-router-dom";
 import "../assets/styles/CreateDetection.css";
 import detection from "../assets/images/detection.jpg";
 
@@ -12,17 +12,40 @@ const CreateDetection = () => {
     time: "",
     maxPlayers: "",
     ageGroup: "",
-    position: "",
+    positions: [], // Postes multiples
     description: "",
+    image: null, // Nouveau champ pour l'image
   });
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Hook pour la navigation
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  // Gestion des cases à cocher pour les postes
+  const handlePositionChange = (e) => {
+    const { value, checked } = e.target;
+    if (checked) {
+      setFormData((prevData) => ({
+        ...prevData,
+        positions: [...prevData.positions, value],
+      }));
+    } else {
+      setFormData((prevData) => ({
+        ...prevData,
+        positions: prevData.positions.filter((position) => position !== value),
+      }));
+    }
+  };
+
+  // Gestion de l'image
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setFormData({ ...formData, image: file });
   };
 
   const handleNextStep = () => {
@@ -44,8 +67,8 @@ const CreateDetection = () => {
       setError("Veuillez compléter les champs obligatoires.");
       return false;
     }
-    if (step === 3 && (!formData.ageGroup || !formData.position)) {
-      setError("Veuillez sélectionner une tranche d'âge et un poste.");
+    if (step === 3 && (!formData.ageGroup || formData.positions.length === 0)) {
+      setError("Veuillez sélectionner une tranche d'âge et au moins un poste.");
       return false;
     }
     setError("");
@@ -55,20 +78,34 @@ const CreateDetection = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Simulation d'une API ou enregistrement local
-    console.log("Detection Created:", formData);
-    setMessage("Détection créée avec succès !");
-    setFormData({
-      title: "",
-      location: "",
-      date: "",
-      time: "",
-      maxPlayers: "",
-      ageGroup: "",
-      position: "",
-      description: "",
+    // Préparation des données pour l'envoi
+    const formDataToSend = new FormData();
+    Object.keys(formData).forEach((key) => {
+      if (key === "positions") {
+        formData[key].forEach((position) => {
+          formDataToSend.append("positions[]", position); // Gérer les tableaux
+        });
+      } else {
+        formDataToSend.append(key, formData[key]);
+      }
     });
-    setStep(1); // Réinitialise l'étape
+
+    // Envoyer les données au backend
+    fetch("/api/detections", {
+      method: "POST",
+      body: formDataToSend,
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setMessage("Détection créée avec succès !");
+        setTimeout(() => {
+          navigate("/booking"); // Redirige vers la page de réservation
+        }, 1500);
+      })
+      .catch((error) => {
+        console.error("Erreur lors de la création :", error);
+        setError("Une erreur est survenue lors de la création de la détection.");
+      });
   };
 
   return (
@@ -167,14 +204,59 @@ const CreateDetection = () => {
                 </select>
               </div>
               <div className="form-group">
-                <label htmlFor="position">Poste recherché</label>
-                <select id="position" name="position" value={formData.position} onChange={handleChange}>
-                  <option value="" disabled>-- Sélectionnez un poste --</option>
-                  <option value="Gardien de but">Gardien de but</option>
-                  <option value="Défenseur">Défenseur</option>
-                  <option value="Milieu de terrain">Milieu de terrain</option>
-                  <option value="Attaquant">Attaquant</option>
-                </select>
+                <label>Postes recherchés *</label>
+                <div className="checkbox-group">
+                  <label>
+                    <input
+                      type="checkbox"
+                      value="Gardien de but"
+                      checked={formData.positions.includes("Gardien de but")}
+                      onChange={handlePositionChange}
+                    />
+                    Gardien de but
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      value="Défenseur"
+                      checked={formData.positions.includes("Défenseur")}
+                      onChange={handlePositionChange}
+                    />
+                    Défenseur
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      value="Milieu de terrain"
+                      checked={formData.positions.includes("Milieu de terrain")}
+                      onChange={handlePositionChange}
+                    />
+                    Milieu de terrain
+                  </label>
+                  <label>
+                    <input
+                      type="checkbox"
+                      value="Attaquant"
+                      checked={formData.positions.includes("Attaquant")}
+                      onChange={handlePositionChange}
+                    />
+                    Attaquant
+                  </label>
+                </div>
+              </div>
+              <div className="form-group">
+                <label htmlFor="image">Image *</label>
+                <input type="file" id="image" name="image" accept="image/*" onChange={handleImageChange} />
+              </div>
+              <div className="form-group">
+                <label htmlFor="description">Description</label>
+                <textarea
+                  id="description"
+                  name="description"
+                  placeholder="Ajoutez des détails"
+                  value={formData.description}
+                  onChange={handleChange}
+                ></textarea>
               </div>
               <button type="button" className="prev-button" onClick={handlePrevStep}>
                 Précédent

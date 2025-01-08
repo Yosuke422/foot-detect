@@ -6,6 +6,7 @@ import Login from "./pages/Login"
 import Register from "./pages/Register"
 import { AuthProvider } from "./components/AuthContext"
 import CreateDetection from "./pages/CreateDetection"
+import BookingPage from "./pages/BookingPage"
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/create-detection" element={<CreateDetection />} />
+        <Route path="/booking" element={<BookingPage />} />
       </Routes>
     </Router>
     </AuthProvider>
