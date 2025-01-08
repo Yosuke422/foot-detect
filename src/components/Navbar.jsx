@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import myLogo from '../asset/Logo_foot_detect.webp'
-import '../styles/Navbar.css'
+import myLogo from '../assets/images/Logo_foot_detect.webp'
+import '../assets/styles/Navbar.css'
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -8,15 +8,15 @@ function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 50) {
-        setScrolled(true);
+        setScrolled(true)
       } else {
-        setScrolled(false);
+        setScrolled(false)
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
     <nav className={`navbar ${scrolled ? 'navbar-scrolled' : ''}`}>
@@ -40,7 +40,7 @@ function Navbar() {
           </div></>
       )}
     </nav>
-  );
+  )
 }
 
-export default Navbar;
+export default Navbar
