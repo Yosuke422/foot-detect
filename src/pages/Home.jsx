@@ -9,17 +9,14 @@ import Footer from "../components/Footer";
 const Home = () => {
   return (
     <div className="home">
-      {/* Hero Section */}
       <section className="hero" style={{ backgroundImage: `url(${joueurs})` }}>
         <div className="hero-content">
-        {/*<img src={logo} alt="Foot'Detect" className="logo" />  */}
           <h1>Foot'Detect</h1>
           <p>Trouvez votre chemin vers le football professionnel</p>
           <button className="cta-button">Réserver</button>
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="features">
         <h2>Découvrez Nos Fonctionnalités</h2>
         <div className="feature-cards">
