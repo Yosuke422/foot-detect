@@ -1,37 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import pour redirection
+import { useAuth } from "../components/AuthContext"; // Import du contexte Auth
+import { Link, useNavigate } from "react-router-dom";
 import myLogo from "../assets/images/Logo_foot_detect.webp";
 import "../assets/styles/Navbar.css";
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // État pour vérifier la connexion
+  const { isLoggedIn, logout } = useAuth(); // Utilise les données du contexte
   const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 50) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setScrolled(window.scrollY > 50);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  useEffect(() => {
-    // Vérifie si un token est présent dans le localStorage
-    const token = localStorage.getItem("token");
-    setIsLoggedIn(!!token); // Si un token existe, l'utilisateur est connecté
-  }, []);
-
   const handleLogout = () => {
-    // Supprime le token et redirige vers la page de connexion
-    localStorage.removeItem("token");
-    setIsLoggedIn(false);
-    navigate("/login");
+    logout();
+    navigate("/login"); // Redirige vers la page de connexion après déconnexion
   };
 
   return (
@@ -56,16 +45,16 @@ function Navbar() {
               <li><a href="#features">Réservations</a></li>
               <li><a href="#about">About</a></li>
 
-              {/* Connexion / Déconnexion */}
+              {/* Bouton Connexion / Déconnexion */}
               <div className="navbar__auth">
                 {isLoggedIn ? (
                   <button onClick={handleLogout} className="logout-button">
                     Déconnexion
                   </button>
                 ) : (
-                  <a href="/login" className="login-button">
+                  <Link to="/login" className="login-button">
                     Connexion
-                  </a>
+                  </Link>
                 )}
               </div>
             </ul>

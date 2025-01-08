@@ -4,9 +4,11 @@ import Home from "./pages/Home"
 import Navbar from "./components/Navbar"
 import Login from "./pages/Login"
 import Register from "./pages/Register"
+import { AuthProvider } from "./components/AuthContext"
 
 const App = () => {
   return (
+    <AuthProvider>
     <Router>
        <Navbar />
       <Routes>
@@ -15,6 +17,7 @@ const App = () => {
         <Route path="/register" element={<Register />} />
       </Routes>
     </Router>
+    </AuthProvider>
   );
 };
 

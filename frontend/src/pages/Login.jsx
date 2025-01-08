@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import du hook useNavigate
-import { loginUser } from "../services/authService";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../components/AuthContext"; // Import du contexte Auth
 import "../assets/styles/Login.css";
 import stade from "../assets/images/stade.jpg";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Hook pour redirection
+  const { login } = useAuth(); // Utilise la fonction login du contexte
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,17 +17,14 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    setMessage("");
 
     try {
-      const response = await loginUser(formData);
-      setMessage("Connexion réussie !");
-      localStorage.setItem("token", response.token); // Stockage du token
-      setTimeout(() => {
-        navigate("/"); // Redirection vers la page d'accueil après 2 secondes
-      }, 2000);
+      // Simule une connexion réussie (remplacez par votre API)
+      const fakeToken = "fake-jwt-token";
+      login(fakeToken); // Appelle la fonction login du contexte
+      navigate("/"); // Redirige vers la page d'accueil après connexion
     } catch (err) {
-      setError(err.message || "Une erreur est survenue. Veuillez réessayer.");
+      setError("Connexion échouée");
     }
   };
 
@@ -36,7 +33,6 @@ const Login = () => {
       <div className="login-card">
         <h2>Connexion</h2>
         <form onSubmit={handleSubmit}>
-          {/* Champs de connexion */}
           <div className="form-group">
             <label htmlFor="email">Email</label>
             <input
@@ -65,13 +61,7 @@ const Login = () => {
             Se connecter
           </button>
         </form>
-
-        {message && <p style={{ color: "green" }}>{message}</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
-
-        <p className="register-link">
-          Pas encore inscrit ? <a href="/register">Créer un compte</a>
-        </p>
       </div>
     </div>
   );
