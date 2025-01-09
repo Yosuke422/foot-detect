@@ -12,24 +12,33 @@ const Register = () => {
     email: "",
     password: "",
     confirmPassword: "",
-  })
-  const [message, setMessage] = useState("")
-  const [error, setError] = useState("")
-  const navigate = useNavigate()
+    role: "joueur", // Default role when switch is off
+  });
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
-  }
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleRoleToggle = (e) => {
+    const isChecked = e.target.checked;
+    setFormData({
+      ...formData,
+      role: isChecked ? "recruteur" : "joueur", // Toggle role based on switch state
+    });
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError("")
-    setMessage("")
+    e.preventDefault();
+    setError("");
+    setMessage("");
 
     if (formData.password !== formData.confirmPassword) {
-      setError("Les mots de passe ne correspondent pas !")
-      return
+      setError("Les mots de passe ne correspondent pas !");
+      return;
     }
 
     try {
@@ -37,15 +46,20 @@ const Register = () => {
         username: formData.username,
         email: formData.email,
         password: formData.password,
-      })
-      setMessage("Inscription réussie !")
+        role: formData.role, // Include role in the registration request
+      });
+
+      // Store the role in localStorage
+      localStorage.setItem("role", formData.role);
+
+      setMessage("Inscription réussie !");
       setTimeout(() => {
-        navigate("/login") 
-      }, 2000)
+        navigate("/login");
+      }, 2000);
     } catch (err) {
-      setError(err.message || "Une erreur est survenue. Veuillez réessayer.")
+      setError(err.message || "Une erreur est survenue. Veuillez réessayer.");
     }
-  }
+  };
 
   return (
     <div className="register-container" style={{ backgroundImage: `url(${stade})` }}>
@@ -103,6 +117,25 @@ const Register = () => {
               required
             />
           </div>
+          <div className="form-group">
+            <label>Choisir un rôle</label>
+            <div className="role-toggle">
+              <span className={`role-label ${formData.role === "joueur" ? "active" : ""}`}>
+                Joueur
+              </span>
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  checked={formData.role === "recruteur"}
+                  onChange={handleRoleToggle}
+                />
+                <span className="slider"></span>
+              </label>
+              <span className={`role-label ${formData.role === "recruteur" ? "active" : ""}`}>
+                Recruteur
+              </span>
+            </div>
+          </div>
           <button type="submit" className="register-button">
             S'inscrire
           </button>
@@ -116,7 +149,7 @@ const Register = () => {
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Register
+export default Register;

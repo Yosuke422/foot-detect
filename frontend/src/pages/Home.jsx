@@ -10,9 +10,14 @@ import Footer from "../components/Footer"
 
 const Home = () => {
   const navigate = useNavigate() 
+  const role = localStorage.getItem("role")
 
   const handleReservationClick = () => {
-    navigate("/booking")
+    if (role === "recruteur") {
+      navigate("/create-detection"); 
+    } else {
+      navigate("/booking");
+    }
   }
 
   return (
