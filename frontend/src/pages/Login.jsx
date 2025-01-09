@@ -1,31 +1,36 @@
-import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import { useAuth } from "../components/AuthContext"
-import "../assets/styles/Login.css"
-import stade from "../assets/images/stade.jpg"
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../components/AuthContext"; // Utilisation du hook useAuth
+import { loginUser } from "../services/authService"; // Assurez-vous d'importer la fonction loginUser
+import "../assets/styles/Login.css";
+import stade from "../assets/images/stade.jpg";
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" })
-  const [error, setError] = useState("")
-  const { login } = useAuth()
-  const navigate = useNavigate()
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
+  const { login } = useAuth();  // Utiliser la fonction login du contexte
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setError("")
+    e.preventDefault();
+    setError("");  // Réinitialiser l'erreur
 
     try {
-      const fakeToken = "fake-jwt-token"
-      login(fakeToken) 
-      navigate("/") 
+      const response = await loginUser(formData);  // Appel à la fonction loginUser
+      const { token } = response;  // Extraire le token de la réponse
+
+      if (token) {
+        login(token);  // Appeler la fonction login pour mettre à jour le contexte et le localStorage
+        navigate("/");  // Rediriger vers la page d'accueil ou autre page après la connexion
+      }
     } catch (err) {
-      setError("Connexion échouée")
+      setError("Connexion échouée");
     }
-  }
+  };
 
   return (
     <div className="login-container" style={{ backgroundImage: `url(${stade})` }}>
@@ -64,7 +69,7 @@ const Login = () => {
         {error && <p style={{ color: "red" }}>{error}</p>}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

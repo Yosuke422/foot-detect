@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { useNavigate } from "react-router-dom" 
+import { useNavigate } from "react-router-dom"
 import { registerUser } from "../services/authService"
 import "../assets/styles/Register.css"
 import stade from "../assets/images/stade.jpg"
@@ -22,11 +22,19 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    setError("")
-    setMessage("")
+    setError("") // Réinitialiser l'erreur
+    setMessage("") // Réinitialiser le message
 
+    // Validation côté client pour les mots de passe
     if (formData.password !== formData.confirmPassword) {
       setError("Les mots de passe ne correspondent pas !")
+      return
+    }
+
+    // Vérification du format de l'email
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(formData.email)) {
+      setError("Veuillez entrer un email valide.")
       return
     }
 
@@ -38,9 +46,10 @@ const Register = () => {
       })
       setMessage("Inscription réussie !")
       setTimeout(() => {
-        navigate("/login") 
+        navigate("/login") // Redirige vers la page de connexion
       }, 2000)
     } catch (err) {
+      // Gérer l'erreur en cas d'échec de l'inscription
       setError(err.message || "Une erreur est survenue. Veuillez réessayer.")
     }
   }
