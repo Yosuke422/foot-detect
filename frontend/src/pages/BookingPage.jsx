@@ -1,60 +1,56 @@
-import React, { useState, useEffect } from "react";
-import "../assets/styles/BookingPage.css";
+import React, { useState, useEffect } from "react"
+import "../assets/styles/BookingPage.css"
 
 const BookingPage = () => {
-  const [detections, setDetections] = useState([]); // Liste complète des détections
-  const [filteredDetections, setFilteredDetections] = useState([]); // Liste filtrée
+  const [detections, setDetections] = useState([])
+  const [filteredDetections, setFilteredDetections] = useState([])
   const [filters, setFilters] = useState({
     title: "",
     location: "",
     ageGroup: "",
     position: "",
-  });
+  })
 
-  // Charger les détections depuis l'API
   useEffect(() => {
     fetch("/api/detections")
       .then((res) => res.json())
       .then((data) => {
-        setDetections(data);
-        setFilteredDetections(data); // Par défaut, aucune recherche
+        setDetections(data)
+        setFilteredDetections(data)
       })
-      .catch((err) => console.error("Erreur lors du chargement des détections :", err));
-  }, []);
+      .catch((err) => console.error("Erreur lors du chargement des détections :", err))
+  }, [])
 
-  // Gestion des changements de filtre
   const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
-  };
+    const { name, value } = e.target
+    setFilters((prevFilters) => ({ ...prevFilters, [name]: value }))
+  }
 
-  // Appliquer les filtres
   useEffect(() => {
     const filtered = detections.filter((detection) => {
       const matchesTitle = filters.title
         ? detection.title.toLowerCase().includes(filters.title.toLowerCase())
-        : true;
+        : true
       const matchesLocation = filters.location
         ? detection.location.toLowerCase().includes(filters.location.toLowerCase())
-        : true;
+        : true
       const matchesAgeGroup = filters.ageGroup
         ? detection.ageGroup === filters.ageGroup
-        : true;
+        : true
       const matchesPosition = filters.position
         ? detection.positions && detection.positions.includes(filters.position)
-        : true;
+        : true
 
-      return matchesTitle && matchesLocation && matchesAgeGroup && matchesPosition;
-    });
+      return matchesTitle && matchesLocation && matchesAgeGroup && matchesPosition
+    })
 
-    setFilteredDetections(filtered);
-  }, [filters, detections]);
+    setFilteredDetections(filtered)
+  }, [filters, detections])
 
   return (
     <div className="booking-page">
       <h2>Réserver une Détection</h2>
 
-      {/* Section des filtres */}
       <div className="filters">
         <h3>Filtres de recherche</h3>
         <div className="filter-group">
@@ -112,7 +108,6 @@ const BookingPage = () => {
         </div>
       </div>
 
-      {/* Liste des détections */}
       <div className="detection-list">
         {filteredDetections.length > 0 ? (
           filteredDetections.map((detection) => (
@@ -141,7 +136,7 @@ const BookingPage = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default BookingPage;
+export default BookingPage

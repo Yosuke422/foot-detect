@@ -1,18 +1,16 @@
-import React from "react";
-import "../assets/styles/Footer.css";
-import logo from "../assets/images/Logo_foot_detect.webp";
+import React from "react"
+import "../assets/styles/Footer.css"
+import logo from "../assets/images/Logo_foot_detect.webp"
 
 const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
-        {/* Logo or App Name */}
         <div className="footer-brand">
           <img src={logo} alt="Foot'Detect" className="logo" />
           <p>Votre chemin vers le football professionnel.</p>
         </div>
 
-        {/* Navigation Links */}
         <div className="footer-links">
           <h3>Navigation</h3>
           <ul>
@@ -23,7 +21,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Social Media Links */}
         <div className="footer-social">
           <h3>Suivez-nous</h3>
           <div className="social-icons">
@@ -40,12 +37,11 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Copyright Section */}
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} Foot'Detect. Tous droits réservés.</p>
+        <p>&copy {new Date().getFullYear()} Foot'Detect. Tous droits réservés.</p>
       </div>
     </footer>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

@@ -1,32 +1,31 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../components/AuthContext"; // Import du contexte Auth
-import "../assets/styles/Login.css";
-import stade from "../assets/images/stade.jpg";
+import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import { useAuth } from "../components/AuthContext"
+import "../assets/styles/Login.css"
+import stade from "../assets/images/stade.jpg"
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
-  const { login } = useAuth(); // Utilise la fonction login du contexte
-  const navigate = useNavigate();
+  const [formData, setFormData] = useState({ email: "", password: "" })
+  const [error, setError] = useState("")
+  const { login } = useAuth()
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+    e.preventDefault()
+    setError("")
 
     try {
-      // Simule une connexion réussie (remplacez par votre API)
-      const fakeToken = "fake-jwt-token";
-      login(fakeToken); // Appelle la fonction login du contexte
-      navigate("/"); // Redirige vers la page d'accueil après connexion
+      const fakeToken = "fake-jwt-token"
+      login(fakeToken) 
+      navigate("/") 
     } catch (err) {
-      setError("Connexion échouée");
+      setError("Connexion échouée")
     }
-  };
+  }
 
   return (
     <div className="login-container" style={{ backgroundImage: `url(${stade})` }}>
@@ -60,11 +59,12 @@ const Login = () => {
           <button type="submit" className="login-button">
             Se connecter
           </button>
+          <p> Vous n'avez pas de compte ? <a href="/register">Inscrivez-vous</a></p>
         </form>
         {error && <p style={{ color: "red" }}>{error}</p>}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
