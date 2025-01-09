@@ -1,4 +1,5 @@
 import React from "react"
+import { useNavigate } from "react-router-dom"
 import "../assets/styles/Search.css"
 
 const Search = ({ showModal, onClose }) => {
@@ -47,6 +48,7 @@ const Search = ({ showModal, onClose }) => {
     },
   ]
 
+  const navigate = useNavigate()
   const [selectedCities, setSelectedCities] = React.useState([])
   const [showAdditionalFilters, setShowAdditionalFilters] = React.useState(false)
   const [selectedPlayersRange, setSelectedPlayersRange] = React.useState("")
@@ -82,9 +84,11 @@ const Search = ({ showModal, onClose }) => {
     return matchCity && matchPlayers && matchSearch && matchDate
   })
 
-  const handleReserve = (center) => {
-    alert(`You clicked reserve on: ${center.name}`)
+  const handleReserve = () => {
+    onClose()
+    navigate("/booking")
   }
+
 
   if (!showModal) {
     return null
@@ -202,7 +206,8 @@ const Search = ({ showModal, onClose }) => {
                   </div>
                   <button
                     className="reserve-button"
-                    onClick={() => handleReserve(center)}
+                    onClick={() => handleReserve()}
+                    
                   >
                     Reserve
                   </button>
