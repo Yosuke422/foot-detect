@@ -1,23 +1,22 @@
-import React from "react";
-import { useNavigate } from "react-router-dom"; // Import du hook pour la navigation
-import "../assets/styles/Home.css";
-import joueurs from "../assets/images/joueurs.jpg";
-import joueuses from "../assets/images/joueuses.jpg";
-import ballon from "../assets/images/ballon.jpg";
-import joueur from "../assets/images/joueur.jpg";
-import logo from "../assets/images/Logo_foot_detect.webp";
-import Footer from "../components/Footer";
+import React from "react"
+import { useNavigate } from "react-router-dom"
+import "../assets/styles/Home.css"
+import joueurs from "../assets/images/joueurs.jpg"
+import joueuses from "../assets/images/joueuses.jpg"
+import ballon from "../assets/images/ballon.jpg"
+import joueur from "../assets/images/joueur.jpg"
+import logo from "../assets/images/Logo_foot_detect.webp"
+import Footer from "../components/Footer"
 
 const Home = () => {
-  const navigate = useNavigate(); // Hook pour la navigation
+  const navigate = useNavigate() 
 
   const handleReservationClick = () => {
-    navigate("/booking"); // Redirige vers la page de réservation
-  };
+    navigate("/booking")
+  }
 
   return (
     <div className="home">
-      {/* Hero Section */}
       <section className="hero" style={{ backgroundImage: `url(${joueurs})` }}>
         <div className="hero-content">
         <img src={logo} alt="Foot'Detect" className="logo" />
@@ -27,7 +26,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Features Section */}
       <section className="features">
         <h2>Découvrez Nos Fonctionnalités</h2>
         <div className="feature-cards">
@@ -60,15 +58,9 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Call-to-Action Section */}
-      {/*<section className="cta-section">
-        <h2>Prêt à Commencer ?</h2>
-        <button className="cta-button">Inscrivez-vous Aujourd'hui</button>
-      </section>*/}
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

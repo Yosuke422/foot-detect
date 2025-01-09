@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import "../assets/styles/CreateDetection.css";
-import detection from "../assets/images/detection.jpg";
+import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
+import "../assets/styles/CreateDetection.css"
+import detection from "../assets/images/detection.jpg"
 
 const CreateDetection = () => {
-  const [step, setStep] = useState(1); // Étape actuelle
+  const [step, setStep] = useState(1) 
   const [formData, setFormData] = useState({
     title: "",
     location: "",
@@ -12,106 +12,101 @@ const CreateDetection = () => {
     time: "",
     maxPlayers: "",
     ageGroup: "",
-    positions: [], // Postes multiples
+    positions: [],
     description: "",
-    image: null, // Nouveau champ pour l'image
-  });
+    image: null,
+  })
 
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const [message, setMessage] = useState("")
+  const [error, setError] = useState("")
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+  }
 
-  // Gestion des cases à cocher pour les postes
   const handlePositionChange = (e) => {
-    const { value, checked } = e.target;
+    const { value, checked } = e.target
     if (checked) {
       setFormData((prevData) => ({
         ...prevData,
         positions: [...prevData.positions, value],
-      }));
+      }))
     } else {
       setFormData((prevData) => ({
         ...prevData,
         positions: prevData.positions.filter((position) => position !== value),
-      }));
+      }))
     }
-  };
+  }
 
-  // Gestion de l'image
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    setFormData({ ...formData, image: file });
-  };
+    const file = e.target.files[0]
+    setFormData({ ...formData, image: file })
+  }
 
   const handleNextStep = () => {
     if (validateStep()) {
-      setStep(step + 1);
+      setStep(step + 1)
     }
-  };
+  }
 
   const handlePrevStep = () => {
-    setStep(step - 1);
-  };
+    setStep(step - 1)
+  }
 
   const validateStep = () => {
     if (step === 1 && (!formData.title || !formData.location)) {
-      setError("Veuillez remplir tous les champs requis.");
-      return false;
+      setError("Veuillez remplir tous les champs requis.")
+      return false
     }
     if (step === 2 && (!formData.date || !formData.time || !formData.maxPlayers)) {
-      setError("Veuillez compléter les champs obligatoires.");
-      return false;
+      setError("Veuillez compléter les champs obligatoires.")
+      return false
     }
     if (step === 3 && (!formData.ageGroup || formData.positions.length === 0)) {
-      setError("Veuillez sélectionner une tranche d'âge et au moins un poste.");
-      return false;
+      setError("Veuillez sélectionner une tranche d'âge et au moins un poste.")
+      return false
     }
-    setError("");
-    return true;
-  };
+    setError("")
+    return true
+  }
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
-    // Préparation des données pour l'envoi
-    const formDataToSend = new FormData();
+    const formDataToSend = new FormData()
     Object.keys(formData).forEach((key) => {
       if (key === "positions") {
         formData[key].forEach((position) => {
-          formDataToSend.append("positions[]", position); // Gérer les tableaux
-        });
+          formDataToSend.append("positions[]", position)
+        })
       } else {
-        formDataToSend.append(key, formData[key]);
+        formDataToSend.append(key, formData[key])
       }
-    });
+    })
 
-    // Envoyer les données au backend
     fetch("/api/detections", {
       method: "POST",
       body: formDataToSend,
     })
       .then((response) => response.json())
       .then((data) => {
-        setMessage("Détection créée avec succès !");
+        setMessage("Détection créée avec succès !")
         setTimeout(() => {
-          navigate("/booking"); // Redirige vers la page de réservation
-        }, 1500);
+          navigate("/booking") 
+        }, 1500)
       })
       .catch((error) => {
-        console.error("Erreur lors de la création :", error);
-        setError("Une erreur est survenue lors de la création de la détection.");
-      });
-  };
+        console.error("Erreur lors de la création :", error)
+        setError("Une erreur est survenue lors de la création de la détection.")
+      })
+  }
 
   return (
     <div className="create-detection-container" style={{ backgroundImage: `url(${detection})` }}>
       <div className="create-detection-card">
-        {/* Bouton Retour à l'accueil */}
         <button className="back-to-home-button" onClick={() => navigate("/")}>
           Retour à l'accueil
         </button>
@@ -272,7 +267,7 @@ const CreateDetection = () => {
         {error && <p className="error-message">{error}</p>}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CreateDetection;
+export default CreateDetection

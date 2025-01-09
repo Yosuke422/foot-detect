@@ -84,24 +84,10 @@
   margin-left: 20px;
 }
 
-.login-button {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.login-button:hover {
-  background-color: #0056b3;
-}
-
 /* Bouton Connexion */
 .login-button {
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: rgba(4, 135, 36, 0.8); 
     color: white;
     text-decoration: none;
     border-radius: 5px;
@@ -110,7 +96,7 @@
   }
   
   .login-button:hover {
-    background-color: #0056b3;
+      background-color: rgb(61, 207, 4); 
   }
   
   /* Bouton Déconnexion */
@@ -130,3 +116,4 @@
     background-color: #e63939;
   }
   
+
