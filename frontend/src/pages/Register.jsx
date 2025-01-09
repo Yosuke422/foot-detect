@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom"
 import { registerUser } from "../services/authService"
 import "../assets/styles/Register.css"
 import stade from "../assets/images/stade.jpg"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faHome } from "@fortawesome/free-solid-svg-icons"
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -48,6 +50,9 @@ const Register = () => {
   return (
     <div className="register-container" style={{ backgroundImage: `url(${stade})` }}>
       <div className="register-card">
+        <button className="back-to-home-button" onClick={() => navigate("/")}>
+                      <FontAwesomeIcon icon={faHome} />
+                    </button>
         <h2>Créer un Compte</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
