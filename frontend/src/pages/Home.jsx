@@ -12,7 +12,7 @@ const Home = () => {
   const navigate = useNavigate() 
   const role = localStorage.getItem("role")
 
-  const handleReservationClick = () => {
+  const handleButtonClick = () => {
     if (role === "recruteur") {
       navigate("/create-detection"); 
     } else {
@@ -27,13 +27,16 @@ const Home = () => {
         <img src={logo} alt="Foot'Detect" className="logo" />
           <h1>Foot'Detect</h1>
           <p>Trouvez votre chemin vers le football professionnel</p>
-          <button className="cta-button" onClick={handleReservationClick}>Réserver</button>
+          <button className="cta-button" onClick={handleButtonClick}>
+            {role === "recruteur" ? "Créer une Détection" : "Réserver"}
+          </button>
         </div>
       </section>
 
       <section className="features">
         <h2>Découvrez Nos Fonctionnalités</h2>
         <div className="feature-cards">
+          
           <div className="feature-card">
             <img
               src={joueuses}

@@ -25,7 +25,7 @@ const Register = () => {
     const isChecked = e.target.checked;
     setFormData({
       ...formData,
-      role: isChecked ? "detecteur" : "joueur", // Toggle role based on switch state
+      role: isChecked ? "recruteur" : "joueur", // Toggle role based on switch state
     });
   };
 
@@ -44,6 +44,7 @@ const Register = () => {
         username: formData.username,
         email: formData.email,
         password: formData.password,
+        
       });
 
       // Store the role in localStorage
@@ -120,12 +121,12 @@ const Register = () => {
               <label className="switch">
                 <input
                   type="checkbox"
-                  checked={formData.role === "detecteur"}
+                  checked={formData.role === "recruteur"}
                   onChange={handleRoleToggle}
                 />
                 <span className="slider"></span>
               </label>
-              <span className={`role-label ${formData.role === "detecteur" ? "active" : ""}`}>
+              <span className={`role-label ${formData.role === "recruteur" ? "active" : ""}`}>
                 Recruteur
               </span>
             </div>
