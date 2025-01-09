@@ -50,7 +50,29 @@ const EventCard = ({ event }) => {
           <strong>Centre de formation:</strong> {event.trainingCenter}
         </p>
       </div>
-      <button>S'inscrire</button>
+      <button
+        style={{
+          backgroundColor: "#28a745",
+          color: "white",
+          border: "none",
+          borderRadius: "5px",
+          padding: "10px 20px",
+          fontSize: "16px",
+          cursor: "pointer",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+          transition: "transform 0.2s, box-shadow 0.2s",
+        }}
+        onMouseOver={(e) => {
+          e.target.style.transform = "scale(1.05)";
+          e.target.style.boxShadow = "0 6px 10px rgba(0, 0, 0, 0.2)";
+        }}
+        onMouseOut={(e) => {
+          e.target.style.transform = "scale(1)";
+          e.target.style.boxShadow = "0 4px 6px rgba(0, 0, 0, 0.1)";
+        }}
+      >
+        S'inscrire
+      </button>
     </div>
   );
 };
