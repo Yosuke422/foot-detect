@@ -56,7 +56,7 @@
   
   .reserve-button {
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: green;
     color: white;
     border: none;
     border-radius: 5px;
@@ -64,6 +64,6 @@
   }
   
   .reserve-button:hover {
-    background-color: #0056b3;
+    background-color: rgb(61, 207, 4);
   }
   

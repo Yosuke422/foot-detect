@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 
 const CreateDetection = () => {
-  const [step, setStep] = useState(1) 
+  const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     title: "",
     location: "",
@@ -16,102 +16,90 @@ const CreateDetection = () => {
     ageGroup: "",
     positions: [],
     description: "",
-    image: null,
-  })
+  });
 
-  const [message, setMessage] = useState("")
-  const [error, setError] = useState("")
-  const navigate = useNavigate()
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
-  }
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handlePositionChange = (e) => {
-    const { value, checked } = e.target
+    const { value, checked } = e.target;
     if (checked) {
       setFormData((prevData) => ({
         ...prevData,
         positions: [...prevData.positions, value],
-      }))
+      }));
     } else {
       setFormData((prevData) => ({
         ...prevData,
         positions: prevData.positions.filter((position) => position !== value),
-      }))
+      }));
     }
-  }
+  };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0]
-    setFormData({ ...formData, image: file })
-  }
+    const file = e.target.files[0];
+    setFormData({ ...formData, image: file });
+  };
 
   const handleNextStep = () => {
     if (validateStep()) {
-      setStep(step + 1)
+      setStep(step + 1);
     }
-  }
+  };
 
   const handlePrevStep = () => {
-    setStep(step - 1)
-  }
+    setStep(step - 1);
+  };
 
   const validateStep = () => {
     if (step === 1 && (!formData.title || !formData.location)) {
-      setError("Veuillez remplir tous les champs requis.")
-      return false
+      setError("Veuillez remplir tous les champs requis.");
+      return false;
     }
     if (step === 2 && (!formData.date || !formData.time || !formData.maxPlayers)) {
-      setError("Veuillez compléter les champs obligatoires.")
-      return false
+      setError("Veuillez compléter les champs obligatoires.");
+      return false;
     }
     if (step === 3 && (!formData.ageGroup || formData.positions.length === 0)) {
-      setError("Veuillez sélectionner une tranche d'âge et au moins un poste.")
-      return false
+      setError("Veuillez sélectionner une tranche d'âge et au moins un poste.");
+      return false;
     }
-    setError("")
-    return true
-  }
+    setError("");
+    return true;
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const formDataToSend = new FormData()
-    Object.keys(formData).forEach((key) => {
-      if (key === "positions") {
-        formData[key].forEach((position) => {
-          formDataToSend.append("positions[]", position)
-        })
-      } else {
-        formDataToSend.append(key, formData[key])
-      }
-    })
+    const storedDetections = JSON.parse(localStorage.getItem("detections")) || [];
 
-    fetch("/api/detections", {
-      method: "POST",
-      body: formDataToSend,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setMessage("Détection créée avec succès !")
-        setTimeout(() => {
-          navigate("/booking") 
-        }, 1500)
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la création :", error)
-        setError("Une erreur est survenue lors de la création de la détection.")
-      })
-  }
+    const newDetection = {
+      ...formData,
+      id: Date.now(),
+    };
+
+    const updatedDetections = [...storedDetections, newDetection];
+
+    localStorage.setItem("detections", JSON.stringify(updatedDetections));
+
+    setMessage("Détection créée avec succès !");
+    setTimeout(() => {
+      navigate("/booking");
+    }, 1500);
+  };
 
   return (
     <div className="create-detection-container" style={{ backgroundImage: `url(${detection})` }}>
       <div className="create-detection-card">
         <button className="back-to-home-button" onClick={() => navigate("/")}>
-    <FontAwesomeIcon icon={faHome} />
-  </button>
+          <FontAwesomeIcon icon={faHome} />
+        </button>
 
         <h2>Créer une Détection</h2>
         <form onSubmit={handleSubmit}>
@@ -192,7 +180,9 @@ const CreateDetection = () => {
               <div className="form-group">
                 <label htmlFor="ageGroup">Tranche d'âges</label>
                 <select id="ageGroup" name="ageGroup" value={formData.ageGroup} onChange={handleChange}>
-                  <option value="" disabled>-- Sélectionnez une tranche d'âge --</option>
+                  <option value="" disabled>
+                    -- Sélectionnez une tranche d'âge --
+                  </option>
                   <option value="U12">U12 (11-12 ans)</option>
                   <option value="U14">U14 (13-14 ans)</option>
                   <option value="U16">U16 (15-16 ans)</option>
@@ -269,7 +259,7 @@ const CreateDetection = () => {
         {error && <p className="error-message">{error}</p>}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CreateDetection
+export default CreateDetection;
