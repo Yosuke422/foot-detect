@@ -59,7 +59,7 @@ input, select {
 }
 
 .next-button:hover, .submit-button:hover {
-  background-color: #0056b3;
+  background-color: rgb(61, 207, 4);
 }
 
 .prev-button {
@@ -77,7 +77,10 @@ input, select {
 }
 
 .back-to-home-button {
-  background-color: #ff4d4d;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background-color: rgb(73, 73, 127);
   color: white;
   border: none;
   border-radius: 5px;
@@ -85,10 +88,5 @@ input, select {
   font-size: 1rem;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  margin-bottom: 20px;
+  z-index: 1000;
 }
-
-.back-to-home-button:hover {
-  background-color: #e63939;
-}
-

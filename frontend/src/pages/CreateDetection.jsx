@@ -1,7 +1,9 @@
-import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
-import "../assets/styles/CreateDetection.css"
-import detection from "../assets/images/detection.jpg"
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../assets/styles/CreateDetection.css";
+import detection from "../assets/images/detection.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
 
 const CreateDetection = () => {
   const [step, setStep] = useState(1) 
@@ -108,8 +110,8 @@ const CreateDetection = () => {
     <div className="create-detection-container" style={{ backgroundImage: `url(${detection})` }}>
       <div className="create-detection-card">
         <button className="back-to-home-button" onClick={() => navigate("/")}>
-          Retour à l'accueil
-        </button>
+    <FontAwesomeIcon icon={faHome} />
+  </button>
 
         <h2>Créer une Détection</h2>
         <form onSubmit={handleSubmit}>
