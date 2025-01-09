@@ -1,10 +1,8 @@
-import React, { useState } from "react"
-import { useNavigate } from "react-router-dom" 
-import { registerUser } from "../services/authService"
-import "../assets/styles/Register.css"
-import stade from "../assets/images/stade.jpg"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faHome } from "@fortawesome/free-solid-svg-icons"
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { registerUser } from "../services/authService";
+import "../assets/styles/Register.css";
+import stade from "../assets/images/stade.jpg";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -27,7 +25,7 @@ const Register = () => {
     const isChecked = e.target.checked;
     setFormData({
       ...formData,
-      role: isChecked ? "recruteur" : "joueur", // Toggle role based on switch state
+      role: isChecked ? "detecteur" : "joueur", // Toggle role based on switch state
     });
   };
 
@@ -46,7 +44,6 @@ const Register = () => {
         username: formData.username,
         email: formData.email,
         password: formData.password,
-        role: formData.role, // Include role in the registration request
       });
 
       // Store the role in localStorage
@@ -64,9 +61,6 @@ const Register = () => {
   return (
     <div className="register-container" style={{ backgroundImage: `url(${stade})` }}>
       <div className="register-card">
-        <button className="back-to-home-button" onClick={() => navigate("/")}>
-                      <FontAwesomeIcon icon={faHome} />
-                    </button>
         <h2>Créer un Compte</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
@@ -126,12 +120,12 @@ const Register = () => {
               <label className="switch">
                 <input
                   type="checkbox"
-                  checked={formData.role === "recruteur"}
+                  checked={formData.role === "detecteur"}
                   onChange={handleRoleToggle}
                 />
                 <span className="slider"></span>
               </label>
-              <span className={`role-label ${formData.role === "recruteur" ? "active" : ""}`}>
+              <span className={`role-label ${formData.role === "detecteur" ? "active" : ""}`}>
                 Recruteur
               </span>
             </div>

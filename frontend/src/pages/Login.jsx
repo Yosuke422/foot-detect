@@ -22,9 +22,8 @@ const Login = () => {
     setError("");
 
     try {
-      const { token, role } = await loginUser(formData);
+      const { token } = await loginUser(formData);
       login(token);
-      localStorage.setItem("role", role);
       navigate("/");
     } catch (err) {
       setError(err.message);
