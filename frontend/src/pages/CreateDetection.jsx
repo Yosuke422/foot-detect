@@ -4,8 +4,11 @@ import "../assets/styles/CreateDetection.css";
 import detection from "../assets/images/detection.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { DetectionAPI } from "../services/detectionService";
+import {useAuth} from "../components/AuthContext"; 
 
 const CreateDetection = () => {
+  const { token } = useAuth();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     title: "",
@@ -16,11 +19,18 @@ const CreateDetection = () => {
     ageGroup: "",
     positions: [],
     description: "",
+    image: null,
   });
 
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
+  if (!isLoggedIn) {
+    alert("Veuillez vous connecter pour réserver une détection.");
+    navigate("/login");
+    return;
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -70,29 +80,88 @@ const CreateDetection = () => {
       setError("Veuillez sélectionner une tranche d'âge et au moins un poste.");
       return false;
     }
+    if (step === 3 && !formData.image) {
+      setError("Veuillez télécharger une image.");
+      return false;
+    }
+
     setError("");
     return true;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const storedDetections = JSON.parse(localStorage.getItem("detections")) || [];
-
-    const newDetection = {
-      ...formData,
-      id: Date.now(),
-    };
-
-    const updatedDetections = [...storedDetections, newDetection];
-
-    localStorage.setItem("detections", JSON.stringify(updatedDetections));
-
-    setMessage("Détection créée avec succès !");
-    setTimeout(() => {
-      navigate("/booking");
-    }, 1500);
+  
+    if (!token) {
+      setError("Token non trouvé. Veuillez vous reconnecter.");
+      return;
+    }
+  
+    try {
+      let positions = formData.positions;
+  
+      // Si positions est une chaîne de caractères, on la transforme en tableau de chaînes de caractères
+      if (typeof positions === 'string') {
+        positions = positions.split(',').map(position => position.trim());
+      }
+  
+      // Si positions n'est toujours pas un tableau ou est vide, on lance une erreur
+      if (!Array.isArray(positions) || positions.length === 0) {
+        throw new Error("Le champ 'positions' doit être un tableau non vide.");
+      }
+  
+      // Validation des positions (si elles sont valides selon les critères du backend)
+      const validPositions = ["gardien de but", "défenseur", "milieu de terrain", "attaquant"];
+      // Vérification si toutes les positions sont valides
+      for (let position of positions) {
+        if (!validPositions.includes(position)) {
+          throw new Error(`Position invalide : ${position}. Choisissez parmi ${validPositions.join(", ")}.`);
+        }
+      }
+  
+      // On transforme 'positions' en une seule chaîne de caractères (comme pour ageGroup)
+      const positionsString = positions.join(", ");  // Exemple: "gardien de but, attaquant"
+  
+      // Vérification des champs obligatoires
+      const requiredFields = ["title", "location", "date", "time", "maxPlayers", "ageGroup", "positions"];
+      for (let field of requiredFields) {
+        if (!formData[field]) {
+          throw new Error(`Le champ '${field}' est obligatoire.`);
+        }
+      }
+  
+      // Préparer les données à envoyer
+      const formDataToSend = new FormData();
+      Object.keys(formData).forEach((key) => {
+        if (key === "positions") {
+          // On envoie positions sous forme de chaîne de caractères
+          formDataToSend.append(key, positionsString); 
+        } else {
+          formDataToSend.append(key, formData[key]);
+        }
+      });
+  
+      // Si une image est présente, on l'ajoute
+      if (formData.image) {
+        formDataToSend.append("image", formData.image);
+      }
+  
+      // Passer le token à l'API et envoyer la demande
+      const response = await DetectionAPI.create(formDataToSend, token);
+  
+      // Message de succès et redirection après la création
+      setMessage("Détection créée avec succès !");
+      setTimeout(() => {
+        navigate("/booking");
+      }, 1500);
+  
+    } catch (err) {
+      setError(err.message || "Erreur lors de la création de la détection. Veuillez réessayer.");
+    }
   };
+  
+  
+
 
   return (
     <div className="create-detection-container" style={{ backgroundImage: `url(${detection})` }}>
@@ -179,15 +248,18 @@ const CreateDetection = () => {
             <div className="form-step">
               <div className="form-group">
                 <label htmlFor="ageGroup">Tranche d'âges</label>
-                <select id="ageGroup" name="ageGroup" value={formData.ageGroup} onChange={handleChange}>
-                  <option value="" disabled>
-                    -- Sélectionnez une tranche d'âge --
-                  </option>
-                  <option value="U12">U12 (11-12 ans)</option>
-                  <option value="U14">U14 (13-14 ans)</option>
-                  <option value="U16">U16 (15-16 ans)</option>
-                  <option value="U18">U18 (17-18 ans)</option>
-                  <option value="Senior">Senior (19 ans et plus)</option>
+                <select
+                  id="ageGroup"
+                  name="ageGroup"
+                  value={formData.ageGroup}
+                  onChange={handleChange}
+                >
+                  <option value="" disabled>-- Sélectionnez une tranche d'âge --</option>
+                  <option value="u12">U12 (11-12 ans)</option>
+                  <option value="u14">U14 (13-14 ans)</option>
+                  <option value="u16">U16 (15-16 ans)</option>
+                  <option value="u18">U18 (17-18 ans)</option>
+                  <option value="senior">Senior (19 ans et plus)</option>
                 </select>
               </div>
               <div className="form-group">
@@ -196,8 +268,8 @@ const CreateDetection = () => {
                   <label>
                     <input
                       type="checkbox"
-                      value="Gardien de but"
-                      checked={formData.positions.includes("Gardien de but")}
+                      value="gardien de but"
+                      checked={formData.positions.includes("gardien de but")}
                       onChange={handlePositionChange}
                     />
                     Gardien de but
@@ -205,8 +277,8 @@ const CreateDetection = () => {
                   <label>
                     <input
                       type="checkbox"
-                      value="Défenseur"
-                      checked={formData.positions.includes("Défenseur")}
+                      value="défenseur"
+                      checked={formData.positions.includes("défenseur")}
                       onChange={handlePositionChange}
                     />
                     Défenseur
@@ -214,8 +286,8 @@ const CreateDetection = () => {
                   <label>
                     <input
                       type="checkbox"
-                      value="Milieu de terrain"
-                      checked={formData.positions.includes("Milieu de terrain")}
+                      value="milieu de terrain"
+                      checked={formData.positions.includes("milieu de terrain")}
                       onChange={handlePositionChange}
                     />
                     Milieu de terrain
@@ -223,8 +295,8 @@ const CreateDetection = () => {
                   <label>
                     <input
                       type="checkbox"
-                      value="Attaquant"
-                      checked={formData.positions.includes("Attaquant")}
+                      value="attaquant"
+                      checked={formData.positions.includes("attaquant")}
                       onChange={handlePositionChange}
                     />
                     Attaquant
@@ -233,30 +305,36 @@ const CreateDetection = () => {
               </div>
               <div className="form-group">
                 <label htmlFor="image">Image *</label>
-                <input type="file" id="image" name="image" accept="image/*" onChange={handleImageChange} />
+                <input
+                  type="file"
+                  id="image"
+                  name="image"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="description">Description</label>
                 <textarea
                   id="description"
                   name="description"
-                  placeholder="Ajoutez des détails"
+                  placeholder="Ajoutez une description"
                   value={formData.description}
                   onChange={handleChange}
-                ></textarea>
+                />
               </div>
               <button type="button" className="prev-button" onClick={handlePrevStep}>
                 Précédent
               </button>
               <button type="submit" className="submit-button">
-                Créer la Détection
+                Soumettre
               </button>
             </div>
           )}
-        </form>
 
-        {message && <p className="success-message">{message}</p>}
-        {error && <p className="error-message">{error}</p>}
+          {error && <p className="error">{error}</p>}
+          {message && <p className="success">{message}</p>}
+        </form>
       </div>
     </div>
   );

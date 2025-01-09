@@ -34,9 +34,17 @@ const Register = () => {
     setError("");
     setMessage("");
 
+    // Validation côté client pour les mots de passe
     if (formData.password !== formData.confirmPassword) {
       setError("Les mots de passe ne correspondent pas !");
       return;
+    }
+
+    // Vérification du format de l'email
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(formData.email)) {
+      setError("Veuillez entrer un email valide.")
+      return
     }
 
     try {
