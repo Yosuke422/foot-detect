@@ -4,11 +4,13 @@ import { useAuth } from "../components/AuthContext";
 import { loginUser } from "../services/authService";
 import "../assets/styles/Login.css";
 import stade from "../assets/images/stade.jpg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHome } from "@fortawesome/free-solid-svg-icons";
 
 const Login = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
-  const { login } = useAuth(); // Hook AuthContext
+  const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -20,17 +22,20 @@ const Login = () => {
     setError("");
 
     try {
-      const { token } = await loginUser(formData); // Valide les credentials
-      login(token); // Appelle le login de AuthContext
-      navigate("/"); // Redirige vers la page d'accueil
+      const { token } = await loginUser(formData);
+      login(token);
+      navigate("/");
     } catch (err) {
-      setError(err.message); // Affiche l'erreur renvoyée par loginUser
+      setError(err.message);
     }
   };
 
   return (
     <div className="login-container" style={{ backgroundImage: `url(${stade})` }}>
       <div className="login-card">
+      <button className="back-to-home-button" onClick={() => navigate("/")}>
+              <FontAwesomeIcon icon={faHome} />
+            </button>
         <h2>Connexion</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
