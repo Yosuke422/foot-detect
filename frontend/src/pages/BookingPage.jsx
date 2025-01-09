@@ -15,6 +15,7 @@ const BookingPage = () => {
 
   const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
+  const userRole = localStorage.getItem("role");
 
   useEffect(() => {
     const storedDetections = JSON.parse(localStorage.getItem("detections")) || [];
@@ -63,6 +64,14 @@ const BookingPage = () => {
       localStorage.setItem("reservations", JSON.stringify(updatedReservations));
       alert("Détection réservée avec succès !");
     }
+  };
+
+  const handleDeleteDetection = (detectionId) => {
+    const updatedDetections = detections.filter((d) => d.id !== detectionId);
+    setDetections(updatedDetections);
+    setFilteredDetections(updatedDetections);
+    localStorage.setItem("detections", JSON.stringify(updatedDetections));
+    alert("Détection supprimée avec succès !");
   };
 
   return (
@@ -156,6 +165,16 @@ const BookingPage = () => {
               >
                 Réserver
               </button>
+
+              {userRole === "recruteur" && (
+                <button
+                  className="delete-button"
+                  onClick={() => handleDeleteDetection(detection.id)}
+                >
+                  Supprimer
+                </button>
+              )}
+
             </div>
           ))
         ) : (

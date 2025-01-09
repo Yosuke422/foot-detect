@@ -66,4 +66,18 @@
   .reserve-button:hover {
     background-color: rgb(61, 207, 4); 
   }
+
+  .delete-button {
+    padding: 10px 20px;
+    background-color: #e63946;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  .delete-button:hover {
+    background-color: #d62828;
+  }  
   
