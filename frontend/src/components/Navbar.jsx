@@ -1,37 +1,37 @@
-import React, { useState, useEffect } from "react"
-import { useAuth } from "../components/AuthContext" 
-import { Link, useNavigate } from "react-router-dom"
-import myLogo from "../assets/images/Logo_foot_detect.webp"
-import "../assets/styles/Navbar.css"
-import Search from "./Search"
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../components/AuthContext";
+import { Link } from "react-router-dom";
+import myLogo from "../assets/images/Logo_foot_detect.webp";
+import "../assets/styles/Navbar.css";
+import Search from "./Search";
 
 function Navbar() {
-  const [scrolled, setScrolled] = useState(false)
-  const [showModal, setShowModal] = useState(false)
-  const { isLoggedIn, logout } = useAuth() 
-  const navigate = useNavigate()
+  const [scrolled, setScrolled] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const { isLoggedIn } = useAuth(); 
+  const role = localStorage.getItem("role"); 
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role"); 
+  };
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-    }
+      setScrolled(window.scrollY > 50);
+    };
 
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
-  const handleLogout = () => {
-    logout()
-    navigate("/login") 
-  }
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleOpenModal = () => {
-    setShowModal(true)
-  }
+    setShowModal(true);
+  };
 
   const handleCloseModal = () => {
-    setShowModal(false)
-  }
+    setShowModal(false);
+  };
 
   return (
     <nav className={`navbar ${scrolled ? "navbar-scrolled" : ""}`}>
@@ -42,7 +42,12 @@ function Navbar() {
           </div>
 
           <div className="navbar__search">
-            <input type="text" placeholder="Search..." className="search-input" onClick={handleOpenModal} />
+            <input
+              type="text"
+              placeholder="Search..."
+              className="search-input"
+              onClick={handleOpenModal}
+            />
             <button className="search-button" onClick={handleOpenModal}>
               Search
             </button>
@@ -50,14 +55,24 @@ function Navbar() {
 
           <div style={{ marginRight: "50px" }}>
             <ul className="navbar__links">
-              <li><a href="/">Home</a></li>
-              <li><a href="/booking">Réservations</a></li>
+              <li>
+                <a href="/">Home</a>
+              </li>
+              {role === "recruteur" ? (
+                <li>
+                  <a href="/create-detection">Créer une Détection</a>
+                </li>
+              ) : (
+                <li>
+                  <a href="/booking">Réservations</a>
+                </li>
+              )}
 
               <div className="navbar__auth">
                 {isLoggedIn ? (
-                  <button onClick={handleLogout} className="logout-button">
+                  <Link to="/login" onClick={handleLogout} className="logout-button">
                     Déconnexion
-                  </button>
+                  </Link>
                 ) : (
                   <Link to="/login" className="login-button">
                     Connexion
@@ -68,9 +83,9 @@ function Navbar() {
           </div>
         </>
       )}
-       <Search showModal={showModal} onClose={handleCloseModal} />
+      <Search showModal={showModal} onClose={handleCloseModal} />
     </nav>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;
