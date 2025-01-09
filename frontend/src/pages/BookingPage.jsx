@@ -16,6 +16,7 @@ const BookingPage = () => {
 
   const { isLoggedIn, token } = useAuth();  // Récupérer le token depuis le contexte
   const navigate = useNavigate();
+  const userRole = localStorage.getItem("role");
 
   // Récupérer les détections depuis l'API
   useEffect(() => {
@@ -103,20 +104,15 @@ const BookingPage = () => {
     }
   };
 
-  // Composant pour afficher un champ de filtre
-  const FilterInput = ({ label, id, name, value, onChange, type = "text" }) => (
-    <div className="filter-group">
-      <label htmlFor={id}>{label}</label>
-      <input
-        type={type}
-        id={id}
-        name={name}
-        placeholder={`Rechercher par ${label.toLowerCase()}`}
-        value={value}
-        onChange={onChange}
-      />
-    </div>
-  );
+reservation-recruteur
+  const handleDeleteDetection = (detectionId) => {
+    const updatedDetections = detections.filter((d) => d.id !== detectionId);
+    setDetections(updatedDetections);
+    setFilteredDetections(updatedDetections);
+    localStorage.setItem("detections", JSON.stringify(updatedDetections));
+    alert("Détection supprimée avec succès !");
+  };
+
 
   return (
     <div className="booking-page">
@@ -203,6 +199,16 @@ const BookingPage = () => {
               >
                 Réserver
               </button>
+
+              {userRole === "recruteur" && (
+                <button
+                  className="delete-button"
+                  onClick={() => handleDeleteDetection(detection.id)}
+                >
+                  Supprimer
+                </button>
+              )}
+
             </div>
           ))
         ) : (
