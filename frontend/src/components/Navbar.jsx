@@ -34,16 +34,26 @@ function Navbar() {
 
           {/* Search Bar */}
           <div className="navbar__search">
-            <input type="text" placeholder="Search..." className="search-input" />
+            <input
+              type="text"
+              placeholder="Search..."
+              className="search-input"
+            />
             <button className="search-button">Search</button>
           </div>
 
           {/* Links */}
           <div style={{ marginRight: "50px" }}>
             <ul className="navbar__links">
-              <li><a href="#home">Home</a></li>
-              <li><a href="#features">Réservations</a></li>
-              <li><a href="#about">About</a></li>
+              <li>
+                <a href="#home">Home</a>
+              </li>
+              <li>
+                <a href="/reservation">Réservations</a>
+              </li>
+              <li>
+                <a href="#about">About</a>
+              </li>
 
               {/* Bouton Connexion / Déconnexion */}
               <div className="navbar__auth">
