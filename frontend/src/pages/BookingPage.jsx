@@ -1,51 +1,69 @@
-import React, { useState, useEffect } from "react"
-import "../assets/styles/BookingPage.css"
+import React, { useState, useEffect } from "react";
+import "../assets/styles/BookingPage.css";
+import { useAuth } from "../components/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const BookingPage = () => {
-  const [detections, setDetections] = useState([])
-  const [filteredDetections, setFilteredDetections] = useState([])
+  const [detections, setDetections] = useState([]);
+  const [filteredDetections, setFilteredDetections] = useState([]);
   const [filters, setFilters] = useState({
     title: "",
     location: "",
     ageGroup: "",
     position: "",
-  })
+  });
+
+  const { isLoggedIn } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetch("/api/detections")
-      .then((res) => res.json())
-      .then((data) => {
-        setDetections(data)
-        setFilteredDetections(data)
-      })
-      .catch((err) => console.error("Erreur lors du chargement des détections :", err))
-  }, [])
+    const storedDetections = JSON.parse(localStorage.getItem("detections")) || [];
+    setDetections(storedDetections);
+    setFilteredDetections(storedDetections);
+  }, []);
 
   const handleFilterChange = (e) => {
-    const { name, value } = e.target
-    setFilters((prevFilters) => ({ ...prevFilters, [name]: value }))
-  }
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({ ...prevFilters, [name]: value }));
+  };
 
   useEffect(() => {
     const filtered = detections.filter((detection) => {
       const matchesTitle = filters.title
         ? detection.title.toLowerCase().includes(filters.title.toLowerCase())
-        : true
+        : true;
       const matchesLocation = filters.location
         ? detection.location.toLowerCase().includes(filters.location.toLowerCase())
-        : true
+        : true;
       const matchesAgeGroup = filters.ageGroup
         ? detection.ageGroup === filters.ageGroup
-        : true
+        : true;
       const matchesPosition = filters.position
         ? detection.positions && detection.positions.includes(filters.position)
-        : true
+        : true;
 
-      return matchesTitle && matchesLocation && matchesAgeGroup && matchesPosition
-    })
+      return matchesTitle && matchesLocation && matchesAgeGroup && matchesPosition;
+    });
 
-    setFilteredDetections(filtered)
-  }, [filters, detections])
+    setFilteredDetections(filtered);
+  }, [filters, detections]);
+
+  const handleReserve = (detectionId) => {
+    if (!isLoggedIn) {
+      alert("Veuillez vous connecter pour réserver une détection.");
+      navigate("/login");
+      return;
+    }
+
+    const reservedDetections = JSON.parse(localStorage.getItem("reservations")) || [];
+    const detectionToReserve = detections.find((d) => d.id === detectionId);
+
+    if (detectionToReserve) {
+      const updatedReservations = [...reservedDetections, detectionToReserve];
+      localStorage.setItem("reservations", JSON.stringify(updatedReservations));
+      alert("Détection réservée avec succès !");
+    }
+  };
 
   return (
     <div className="booking-page">
@@ -128,7 +146,16 @@ const BookingPage = () => {
               <p>
                 <strong>Heure :</strong> {detection.time}
               </p>
-              <button className="reserve-button">Réserver</button>
+              <p>
+                <strong>Nombre maximal de participants :</strong> {detection.maxPlayers}
+              </p>
+
+              <button
+                className="reserve-button"
+                onClick={() => handleReserve(detection.id)}
+              >
+                Réserver
+              </button>
             </div>
           ))
         ) : (
@@ -136,7 +163,7 @@ const BookingPage = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default BookingPage
+export default BookingPage;
