@@ -1,42 +1,29 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useState, useContext } from "react";
 
 const AuthContext = createContext();
 
-export const useAuth = () => useContext(AuthContext);
-
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userRole, setUserRole] = useState(null);
+  // Utiliser le token de localStorage si disponible, sinon initialiser à false
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+  const [token, setToken] = useState(localStorage.getItem("token")); // Stocker le token
 
-  const login = (token) => {
+  const login = (newToken) => {
+    localStorage.setItem("token", newToken);
     setIsLoggedIn(true);
-    const storedRole = localStorage.getItem("role");
-    setUserRole(storedRole);
-    localStorage.setItem("token", token);
+    setToken(newToken); // Mettre à jour le token dans le state
   };
 
   const logout = () => {
-    setIsLoggedIn(false);
-    setUserRole(null);
     localStorage.removeItem("token");
-    localStorage.removeItem("role");
+    setIsLoggedIn(false);
+    setToken(null); // Réinitialiser le token dans le state
   };
 
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const role = localStorage.getItem("role");
-    if (token && role) {
-      setIsLoggedIn(true);
-      setUserRole(role);
-    } else {
-      setIsLoggedIn(false);
-      setUserRole(null);
-    }
-  }, []);
-
   return (
-    <AuthContext.Provider value={{ isLoggedIn, userRole, login, logout }}>
+    <AuthContext.Provider value={{ isLoggedIn, token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);
