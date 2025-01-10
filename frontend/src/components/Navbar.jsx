@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../components/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import myLogo from "../assets/images/Logo_foot_detect.webp";
 import "../assets/styles/Navbar.css";
 import Search from "./Search";
@@ -8,12 +8,16 @@ import Search from "./Search";
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const { isLoggedIn } = useAuth(); 
-  const role = localStorage.getItem("role"); 
+  const { isLoggedIn, login, logout } = useAuth(); // Auth context
+  const [role, setRole] = useState(localStorage.getItem("role")); // Local role
+  const navigate = useNavigate();
 
   const handleLogout = () => {
+    logout(); // Utiliser la fonction de déconnexion du contexte
+    localStorage.removeItem("role");
     localStorage.removeItem("token");
-    localStorage.removeItem("role"); 
+    setRole(null); // Réinitialiser le rôle local
+    navigate("/login"); // Rediriger vers la page de connexion
   };
 
   useEffect(() => {
@@ -23,6 +27,15 @@ function Navbar() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setRole(localStorage.getItem("role"));
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, []);
 
   const handleOpenModal = () => {
@@ -70,7 +83,11 @@ function Navbar() {
 
               <div className="navbar__auth">
                 {isLoggedIn ? (
-                  <Link to="/login" onClick={handleLogout} className="logout-button">
+                  <Link
+                    to="/login"
+                    onClick={handleLogout}
+                    className="logout-button"
+                  >
                     Déconnexion
                   </Link>
                 ) : (
