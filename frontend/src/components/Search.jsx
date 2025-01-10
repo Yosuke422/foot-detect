@@ -8,42 +8,42 @@ const Search = ({ showModal, onClose }) => {
       id: 1,
       name: "Center 1",
       city: "Paris",
-      playersRange: "1-5",
+      playersRange: "U18",
       date: "2025-01-10",
     },
     {
       id: 2,
       name: "Center 2",
       city: "Lyon",
-      playersRange: "6-10",
+      playersRange: "U12",
       date: "2025-02-15",
     },
     {
       id: 3,
       name: "Center 3",
       city: "Nice",
-      playersRange: "11-15",
+      playersRange: "U14",
       date: "2025-02-15",
     },
     {
       id: 4,
       name: "Center 4",
       city: "Marseille",
-      playersRange: "16+",
+      playersRange: "U16",
       date: "2025-03-01",
     },
     {
       id: 5,
       name: "Center 5",
       city: "Paris",
-      playersRange: "6-10",
+      playersRange: "U18",
       date: "2025-01-10",
     },
     {
       id: 6,
       name: "Center 6",
       city: "Toulouse",
-      playersRange: "1-5",
+      playersRange: "Senior",
       date: "2025-01-10",
     },
   ]
@@ -56,7 +56,7 @@ const Search = ({ showModal, onClose }) => {
   const [selectedDate, setSelectedDate] = React.useState("")
 
   const cityFilters = ["Paris", "Lyon", "Marseille", "Toulouse", "Nice"]
-  const playerRanges = ["1-5", "6-10", "11-15", "16+"]
+  const playerRanges = ["U12", "U14", "U16", "U18", "Senior"]
 
   const toggleCity = (city) => {
     if (selectedCities.includes(city)) {

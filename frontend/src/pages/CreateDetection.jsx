@@ -231,10 +231,7 @@ const CreateDetection = () => {
                   </label>
                 </div>
               </div>
-              <div className="form-group">
-                <label htmlFor="image">Image *</label>
-                <input type="file" id="image" name="image" accept="image/*" onChange={handleImageChange} />
-              </div>
+              
               <div className="form-group">
                 <label htmlFor="description">Description</label>
                 <textarea
