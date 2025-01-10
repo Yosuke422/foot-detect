@@ -59,13 +59,20 @@ function Navbar() {
                 <a href="/">Home</a>
               </li>
               {role === "recruteur" ? (
+                <>
                 <li>
                   <a href="/create-detection">Créer une Détection</a>
                 </li>
-              ) : (
                 <li>
-                  <a href="/booking">Réservations</a>
-                </li>
+                    <a href="/booking">Mes détection</a>
+                  </li>
+                </>
+              ) : (
+                <><li>
+                    <a href="/booking">Réservations</a>
+                  </li><li>
+                      <a href="/reservation">mes réservations</a>
+                    </li></>
               )}
 
               <div className="navbar__auth">

@@ -1,83 +1,139 @@
-.booking-page {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .filters {
-    margin-bottom: 20px;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    background-color: #f9f9f9;
-  }
-  
-  .filter-group {
-    margin-bottom: 15px;
-  }
-  
-  .filter-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  .filter-group input,
-  .filter-group select {
-    width: 98%;
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .detection-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px;
-  }
-  
-  .detection-item {
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    padding: 15px;
-    background-color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .detection-item h4 {
-    margin-bottom: 10px;
-  }
-  
-  .reserve-button {
-    padding: 10px 20px;
-    background-color: rgba(4, 135, 36, 0.8); 
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .reserve-button:hover {
-    background-color: rgb(61, 207, 4); 
-  }
+/************************************
+ * General Page Styling
+ ************************************/
+ .booking-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
 
-  .delete-button {
-    padding: 10px 20px;
-    background-color: #e63946;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 10px;
-  }
-  
-  .delete-button:hover {
-    background-color: #d62828;
-  }  
-  
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/************************************
+ * Filters
+ ************************************/
+.filters {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+}
+
+.filter-group {
+  margin-bottom: 15px;
+}
+
+.filter-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.filter-group input,
+.filter-group select {
+  width: 98%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/************************************
+ * Detection List Layout
+ ************************************/
+.detection-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/************************************
+ * Flip Card Container
+ ************************************/
+.detection-item {
+  position: relative;
+  perspective: 1000px; /* Enables the 3D flip */
+  width: 100%;
+  height: 350px; /* Fixed height so front/back align properly */
+  /* We remove direct padding from here so the .card-inner can have consistent sizing. */
+}
+
+/* The container that will be flipped */
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;  /* Required for 3D child transforms */
+  transition: transform 0.6s ease;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Flip the card on hover */
+.detection-item:hover .card-inner {
+  transform: rotateY(180deg);
+}
+
+/************************************
+ * Front & Back Faces
+ ************************************/
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden; 
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 15px;
+  overflow-y: auto; /* If content is long, allow scrolling */
+}
+
+.card-front h4 {
+  margin-bottom: 10px;
+}
+
+/* The back face is rotated 180 by default, invisible until flipped */
+.card-back {
+  transform: rotateY(180deg);
+  background-color: #f9f9f9; 
+}
+
+/************************************
+ * Buttons
+ ************************************/
+.reserve-button {
+  padding: 10px 20px;
+  background-color: rgba(4, 135, 36, 0.8);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.reserve-button:hover {
+  background-color: rgb(61, 207, 4);
+}
+
+.delete-button {
+  padding: 10px 20px;
+  background-color: #e63946;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px; /* or side-by-side if you prefer */
+}
+
+.delete-button:hover {
+  background-color: #d62828;
+}
+
+
