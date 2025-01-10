@@ -22,12 +22,12 @@ const Login = () => {
     setError("");
 
     try {
-      const response = await loginUser(formData);  // Appel à la fonction loginUser
-      const { token } = response;  // Extraire le token de la réponse
+      const response = await loginUser(formData);
+      const { token } = response;
 
       if (token) {
-        login(token);  // Appeler la fonction login pour mettre à jour le contexte et le localStorage
-        navigate("/");  // Rediriger vers la page d'accueil ou autre page après la connexion
+        login(token);
+        navigate("/");
       }
     } catch (err) {
       setError(err.message);

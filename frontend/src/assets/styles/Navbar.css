@@ -102,16 +102,13 @@
   /* Bouton Déconnexion */
   .logout-button {
     padding: 10px 20px;
-    background-color: rgba(1, 143, 36, 0.8); 
+    background-color: #e63939; 
     color: white;
     text-decoration: none;
     border-radius: 5px;
     font-weight: bold;
     transition: background-color 0.3s ease;
   }
-  
-  .logout-button:hover {
-    background-color: #e63939;
-  }
+
   
 
